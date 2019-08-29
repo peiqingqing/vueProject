@@ -6,8 +6,8 @@ const packageConfig = require('../package.json')
 
 exports.assetsPath = function (_path) {
   const assetsSubDirectory = process.env.NODE_ENV === 'production'
-    ? config.build.assetsSubDirectory
-    : config.dev.assetsSubDirectory
+      ? config.build.assetsSubDirectory
+      : config.dev.assetsSubDirectory
 
   return path.posix.join(assetsSubDirectory, _path)
 }
@@ -47,6 +47,7 @@ exports.cssLoaders = function (options) {
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
+        publicPath: '../../',
         fallback: 'vue-style-loader'
       })
     } else {
@@ -57,20 +58,20 @@ exports.cssLoaders = function (options) {
   function resolveResouce(name) {
     return path.resolve(__dirname, '../src/assets/css/' + name);
   }
-
-  // https://vue-loader.vuejs.org/en/configurations/extract-css.html
+  // http://vuejs.github.io/vue-loader/en/configurations/extract-css.html
   return {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
     sass: generateLoaders('sass', { indentedSyntax: true })
-      .concat({
-        loader: 'sass-resources-loader',
-        options: {
-          // it need a absolute path
-          resources: [resolveResouce('comm.scss')]
-        }
-      }),
+        .concat({
+          loader: 'sass-resources-loader',
+          options: {
+            // it need a absolute path
+            resources: [resolveResouce('comm.scss')]
+          }
+        }),
+    // sass: generateSassResourceLoader(),
     scss: generateLoaders('sass').concat({
       loader: 'sass-resources-loader',
       options: {
@@ -78,6 +79,7 @@ exports.cssLoaders = function (options) {
         resources: [resolveResouce('comm.scss')]
       }
     }),
+    // scss: generateSassResourceLoader(),
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')
   }
@@ -112,7 +114,7 @@ exports.createNotifierCallback = () => {
       title: packageConfig.name,
       message: severity + ': ' + error.name,
       subtitle: filename || '',
-      icon: path.join(__dirname, 'logo.png')
+      // icon: path.join(__dirname, 'logo.png')
     })
   }
 }
